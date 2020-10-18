@@ -4,6 +4,13 @@
 \usepackage[backend=biber]{biblatex}
 \addbibresource{mybib.bib}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\makeatletter
+\newcommand{\vo}{\vec{o}\@ifnextchar{^}{\,}{}}
+\makeatother
 
 \title{Distance Measurement of Objects from 2d Images / Videos}
 \author{Ahammed Hani , Dinu D'Silva , Sarath C Ani , Shyamjith M C}
@@ -18,14 +25,7 @@
 	\frametitle{Introduction}
 	
 	\begin{itemize}
-		\item 3D scene reconstruction from image sequences has been studied
-		in our community for decades. Until a few years ago, the structure
-		from motion systems for solving this problem were not very robust,
-		and practically only worked “in the lab”, with highly calibrated and
-		predictable setups. They also, often, produced only sparse reconstructions, i.e., resolving depth at only a few isolated tracked point
-		features. But in the last decade or so, we have seen good progress
-		towards enabling more casual capture and producing denser reconstructions, driven by high-quality open-source reconstruction
-		systems and recent advances in learning-based techniques.
+		\item 
 	\end{itemize}
 	
 	\end{frame}
@@ -36,14 +36,14 @@
 	\frametitle{Problem Statement}
 	
 	\begin{itemize}
-		\item Calculating distances of objects (approximately) without a ruler or reference has been an issue for people. We use computer vision to make a model that can calculate distance between two points.
+		\item 
 	\end{itemize}
 	
 	\end{frame}
 
-	\section{Previous Works}
+	\section{Literature Review}
 	\begin{frame}
-	\frametitle{Previous Works}
+	\frametitle{Literature Review}
 	\begin{itemize}
 		
 		\item Stereo Vision (Conventional Method): \\
@@ -54,42 +54,106 @@
 	\end{frame}
 	
 	\begin{frame}
-	\frametitle{Previous Works}
+	\frametitle{Literature Review}
 	\begin{itemize}
 	
-	\item \textit{Supervised Monocular Depth Estimation} : Early learning based approaches tend to segment the features of image and use some post processing steps. Deep learning based models have been successfully applied to single image depth estimation.However, training these models requires ground truth depth maps that are difficult to acquire.
+	\item \textit{Open DR} : 
 	
+	\end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+	\frametitle{Literature Review}
+	\begin{itemize}
+	
+	\item \textit{Occupancy Networks} :
+	\end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+	\frametitle{Literature Review}
+	\begin{itemize}
+	
+	\item \textit{DIB-R Renderer} :
+	
+	
+	
+	\end{itemize}
+	\end{frame}
+	
+	
+	
+	\section{Proposed Methodology}
+	\begin{frame}
+	\frametitle{Proposed Methodology}
+	\begin{itemize}
+		\item \textbf{Differentiable Rendering} \\ 
+		\begin{itemize}
+			\item \textbf{What is rendering ?} \\
+			The process of converting a 3D scene into a 2D image is called rendering.
+			\item Rendering Pipeline :\\
+			in OpenGL and such APIs decompose the process of rendering 3D scenes into a set of sequential user-defined programs,reffered to as shaders. While there are many shader types, the three most important shaders that should be present are :
+			\begin{itemize}
+				\item Vertex Shader
+				\item Rasterization Shader
+				\item Fragment Shader
+
+			\end{itemize}
+		\item The Vertex shader and Fragment shaders are defined such that they are differentiable. whereas the Rasterization shader is not differentiable.
+			
+		\end{itemize}
+	\end{itemize}
+	\end{frame}	
+	\begin{frame}
+		\frametitle{Proposed Methodology}
 		\begin{center}
 			\begin{figure}
-				\includegraphics[height=0.4\textheight]{imgs/dl.png}
-				\caption{\textcite{eigen2015predicting}}
+				\includegraphics[height=0.3\textheight]{imgs/vertex.jpg}
+				\caption{Vertex Shader}
+			\end{figure}
+			\begin{figure}
+				\includegraphics[height=0.3\textheight]{imgs/rasterization.jpg}
+				\caption{Rasterization Shader}
+			\end{figure}
+		\end{center}
+	\end{frame}
+	\begin{frame}
+		\frametitle{Proposed Methodology}
+		\begin{columns}
+			\column{0.5\textwidth}
+			Using barycentric interpolation of the face's vertex attributes,
+			
+	%		\begin{block}{Formula}
+    %			calculated in this equation
+    %			\begin{equation}
+    %       		Total = \frac{1}{n}*\sum_{i=0}^n (eachnode_i)
+    %			\end{equation}
+	%		\end{block}
+	
+			\begin{equation}
+				I_{i} = u_{0}w_{0} + u_{1}w_{1} + u_{2}w_{2}
+			\end{equation}
+			\begin{equation}
+				w_{k} = \Omega_{k} (v_{0} , v_{1} , v_{2} , p_{i})
+			\end{equation}
+			
+			
+			
+			\column{0.5\textwidth}
+			\begin{figure}
+				\includegraphics[width=0.8\textwidth]{imgs/dr.jpg}
+				\caption{Illustration of differentiable renderer}
+				
 			\end{figure}
 			
-		\end{center}
-	
-	\end{itemize}
+		\end{columns}
+		
+		The design of this differentiable renderer allows for optimization over all defined vertex attributes and a variety of rendering models, the L-1 loss between target images and predicted images is optimized.
 	\end{frame}
 	
 	\begin{frame}
-	\frametitle{Previous Works}
-	\begin{itemize}
-	
-	\item \textit{Multi-view reconstruction} : Multi-view stereo algorithms estimate
-	scene depth using multiple images captured from arbitrary view points. multi-view stereo techniques assume a static scene.
-	For dynamic objects, these methods either produce erroneous estimates or drop pixels with low confidence. In contrast, our method
-	produces dense depth even in the presence of moderate dynamic scene motion.
-	\end{itemize}
-	\end{frame}
-	
-	\begin{frame}
-	\frametitle{Previous Works}
-	\begin{itemize}
-	
-	\item \textit{Depth from video} : Recovering dense depth from monocular video is a challenging problem. To handle moving objects, existing techniques rely on motion segmentation and explicit motion modeling for the moving objects in the scene. 
-	(\textcite{casser2019depth})
-	Several methods estimate depth by integrating motion estimation and multi-view reconstruction using two frames.The state-of-the-art video-to-depth methods predict a distribution over depth based on the cost volume constructed by warping nearby frames to a reference viewpoint. Such model designs thus do not account for dynamically moving objects.
-	\end{itemize}
-	
+	\frametitle{Algorithm}
+		\includegraphics[width=\textwidth]{imgs/workflow.jpg}
 	\end{frame}
 	
 	\section{Bibliography}
